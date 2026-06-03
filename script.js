@@ -370,16 +370,6 @@ function validateStep1() {
 
   if (!notEmpty('villeNaissance', 'La ville de naissance est obligatoire.')) ok = false;
 
-  const cp = val('cpNaissance').trim();
-  if (!cp) {
-    showError('cpNaissance', 'Le code postal de naissance est obligatoire.');
-    ok = false;
-  } else if (!/^[0-9]{5}$/.test(cp)) {
-    showError('cpNaissance', 'Le code postal doit contenir 5 chiffres.');
-    ok = false;
-  } else {
-    clearError('cpNaissance');
-  }
 
   if (!notEmpty('villeResidence', 'La ville de résidence est obligatoire.')) ok = false;
 
@@ -511,7 +501,7 @@ function buildSummary() {
     { label: 'Joueur',             value: val('prenomJoueur') + ' ' + val('nomJoueur').toUpperCase() },
     { label: 'Date de naissance',  value: formatDate(val('dateNaissance')) },
     { label: 'Catégorie',          value: categorie },
-    { label: 'Lieu de naissance',  value: val('villeNaissance') + ' (' + val('cpNaissance') + ')' },
+    { label: 'Lieu de naissance',  value: val('villeNaissance') },
     { label: 'Ville de résidence', value: val('villeResidence') },
     { label: 'Sexe',               value: (document.querySelector('input[name="sexe"]:checked') || {}).value || '—' },
     { label: isSenior ? 'Vos coordonnées' : 'Parent / tuteur',
