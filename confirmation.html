@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demande envoyée — EPRS Football</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="confirm-body">
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo-wrapper">
+        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo EPRS Football">
+          <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+          <circle cx="50" cy="50" r="22" fill="#c0392b"/>
+          <text x="50" y="27" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="Oswald,sans-serif" font-size="7" letter-spacing="1">ENTENTE</text>
+          <text x="50" y="58" text-anchor="middle" fill="white" font-family="Oswald,sans-serif" font-size="20" font-weight="700">EPRS</text>
+          <text x="50" y="72" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Oswald,sans-serif" font-size="7.5" letter-spacing="1">FOOTBALL</text>
+        </svg>
+        <div class="logo-text">
+          <span class="logo-name">EPRS</span>
+          <span class="logo-subtitle">Entente Petit-Réderching Siersthal</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="confirm-main">
+    <div class="confirm-card">
+
+      <!-- Ballon rebondissant -->
+      <div class="ball-wrapper">
+        <div>
+          <span class="bouncing-ball" aria-hidden="true">⚽</span>
+          <div class="ball-shadow"></div>
+        </div>
+      </div>
+
+      <h1 class="confirm-title">Demande envoyée ! 🎉</h1>
+      <p class="confirm-subtitle" id="confirmSubtitle">Merci&nbsp;! Guillaume vous recontactera très prochainement.</p>
+
+      <!-- Alerte mutation (affichée si catégorie U13+) -->
+      <div class="confirm-mutation-alert" id="confirmMutation" style="display:none">
+        ⚠️ <strong>Rappel — Date limite de mutation :</strong>
+        Si votre enfant rejoint l'EPRS depuis un autre club en catégorie
+        <strong id="confirmCategorie"></strong> ou supérieure, la date limite de dépôt
+        du dossier de mutation est le <strong>15 juillet 2025</strong>.
+      </div>
+
+      <!-- Rappel des étapes -->
+      <div class="confirm-steps" role="list">
+        <div class="confirm-step" role="listitem">
+          <div class="confirm-step-num" aria-hidden="true">1</div>
+          <div>
+            <strong>Licence FFF</strong><br>
+            Vous recevrez un email de la FFF à l'adresse indiquée pour valider la licence officielle de votre enfant.
+          </div>
+        </div>
+        <div class="confirm-step" role="listitem">
+          <div class="confirm-step-num" aria-hidden="true">2</div>
+          <div>
+            <strong>Cotisation SportEasy</strong><br>
+            Si vous n'avez pas de compte, un email d'invitation vous sera envoyé. Le paiement s'effectue directement dans l'application.
+          </div>
+        </div>
+        <div class="confirm-step" role="listitem">
+          <div class="confirm-step-num" aria-hidden="true">3</div>
+          <div>
+            <strong>Contact éducateur</strong><br>
+            L'éducateur responsable de la catégorie de votre enfant vous contactera directement.
+          </div>
+        </div>
+      </div>
+
+      <p class="confirm-signature">
+        Guillaume Sumann — Coordinateur jeunes EPRS
+      </p>
+
+      <a href="index.html" class="btn btn--home">← Retour à l'accueil</a>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <svg class="footer-logo" viewBox="0 0 60 60" aria-hidden="true">
+          <circle cx="30" cy="30" r="28" fill="#1a3a6b"/>
+          <text x="30" y="36" text-anchor="middle" fill="white" font-family="Oswald,sans-serif" font-size="11" font-weight="700">EPRS</text>
+        </svg>
+        <div>
+          <p><strong>EPRS — Entente Petit-Réderching Siersthal</strong></p>
+          <p>Pays de Bitche, Moselle</p>
+          <p>Contact : <a href="mailto:guillaume.sumann@gmail.com">guillaume.sumann@gmail.com</a></p>
+        </div>
+      </div>
+      <p class="footer-copy">© 2025 EPRS Football — Inscriptions jeunes saison 2025/2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const MUTATION_CATS = ['U13', 'U14', 'U15', 'U16'];
+
+    (function () {
+      const raw = sessionStorage.getItem('eprs_registration');
+      if (!raw) return;
+
+      try {
+        const data = JSON.parse(raw);
+
+        if (data.prenomParent) {
+          document.getElementById('confirmSubtitle').textContent =
+            'Merci ' + data.prenomParent + ' ! Guillaume vous recontactera très prochainement.';
+        }
+
+        if (data.categorie && MUTATION_CATS.includes(data.categorie)) {
+          document.getElementById('confirmCategorie').textContent = data.categorie;
+          document.getElementById('confirmMutation').style.display = 'block';
+        }
+      } catch (e) {
+        // sessionStorage corrompue — on affiche la page par défaut
+      }
+
+      sessionStorage.removeItem('eprs_registration');
+    })();
+  </script>
+</body>
+</html>

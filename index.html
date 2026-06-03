@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription 2025/2026 — EPRS Football</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo-wrapper">
+
+        <!-- Logo : logo.png en priorité, SVG en fallback -->
+        <div class="logo-media">
+          <img src="images/logo.png"
+               class="logo-img"
+               alt="Logo EPRS Football"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+          <svg class="logo-svg" style="display:none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo EPRS Football">
+            <circle cx="50" cy="50" r="48" fill="#1a3a6b"/>
+            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+            <circle cx="50" cy="50" r="22" fill="#c0392b"/>
+            <text x="50" y="27" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="Oswald,sans-serif" font-size="7" letter-spacing="1">ENTENTE</text>
+            <text x="50" y="58" text-anchor="middle" fill="white" font-family="Oswald,sans-serif" font-size="20" font-weight="700">EPRS</text>
+            <text x="50" y="72" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Oswald,sans-serif" font-size="7.5" letter-spacing="1">FOOTBALL</text>
+          </svg>
+        </div>
+
+        <div class="logo-text">
+          <span class="logo-name">EPRS</span>
+          <span class="logo-subtitle">Entente Petit-Réderching Siersthal</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── HERO avec photo de fond ── -->
+    <section class="hero">
+      <div class="hero-bg">
+        <img src="images/hero.jpg"
+             class="hero-bg-img"
+             alt=""
+             aria-hidden="true"
+             onerror="this.closest('.hero-bg').classList.add('hero-bg--fallback')">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">⚽ Une nouvelle saison s'annonce à l'EPRS !</h1>
+        <p class="hero-text">La saison 2025/2026 approche et nous avons hâte de vous retrouver sur les terrains du Pays de Bitche. Que vous soyez un fidèle de l'EPRS ou que vous souhaitiez nous rejoindre pour la première fois, ce formulaire vous permet de déposer votre demande d'inscription en quelques minutes.</p>
+      </div>
+    </section>
+
+    <!-- ── ALERTES ── -->
+    <section class="alerts-section">
+      <div class="container">
+        <div class="alert alert--info">
+          <span class="alert-icon" aria-hidden="true">⏰</span>
+          <div class="alert-body">
+            Les inscriptions sont ouvertes. Complétez le formulaire ci-dessous et nous vous recontacterons rapidement.
+          </div>
+        </div>
+        <div class="alert alert--warning">
+          <span class="alert-icon" aria-hidden="true">⚠️</span>
+          <div class="alert-body">
+            <strong>DATE LIMITE — MUTATIONS U13 / U15 / U16 / U17</strong>
+            <p>Si votre enfant rejoint l'EPRS depuis un autre club et évolue en catégorie U13, U15, U16 ou U17, la date limite de dépôt du dossier de mutation est fixée au <strong>15 juillet 2025</strong>. Passé cette date, la demande ne pourra plus être traitée pour cette saison. (Catégories U7, U9, U11 et Senior non concernées.)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EN UN COUP D'ŒIL ── -->
+    <section class="overview-section">
+      <div class="container">
+        <div class="overview-box">
+          <p class="overview-title">En un coup d'œil</p>
+          <div class="overview-items">
+            <div class="overview-item">
+              <span class="overview-icon" aria-hidden="true">⏱️</span>
+              <span>3 minutes</span>
+            </div>
+            <span class="overview-sep" aria-hidden="true">|</span>
+            <div class="overview-item">
+              <span class="overview-icon" aria-hidden="true">📱</span>
+              <span>Depuis votre téléphone</span>
+            </div>
+            <span class="overview-sep" aria-hidden="true">|</span>
+            <div class="overview-item">
+              <span class="overview-icon" aria-hidden="true">✅</span>
+              <span>Confirmation immédiate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FORMULAIRE MULTI-ÉTAPES (4 étapes) ── -->
+    <section class="form-section">
+      <div class="container">
+        <div class="form-card">
+
+          <!-- Barre de progression : 4 étapes -->
+          <div class="progress-container" aria-label="Progression du formulaire">
+            <div class="progress-steps">
+              <div class="progress-step active" id="pstep1">
+                <div class="progress-dot">1</div>
+                <div class="progress-label">Joueur</div>
+              </div>
+              <div class="progress-line"><div class="progress-line-fill" id="line1"></div></div>
+              <div class="progress-step" id="pstep2">
+                <div class="progress-dot">2</div>
+                <div class="progress-label">Contact</div>
+              </div>
+              <div class="progress-line"><div class="progress-line-fill" id="line2"></div></div>
+              <div class="progress-step" id="pstep3">
+                <div class="progress-dot">3</div>
+                <div class="progress-label">Démarches</div>
+              </div>
+              <div class="progress-line"><div class="progress-line-fill" id="line3"></div></div>
+              <div class="progress-step" id="pstep4">
+                <div class="progress-dot">4</div>
+                <div class="progress-label">Droit image</div>
+              </div>
+            </div>
+            <p class="progress-text" id="progressText" aria-live="polite">Étape 1/4 — Joueur</p>
+          </div>
+
+          <form id="inscriptionForm" method="POST" novalidate>
+            <!-- Champs cachés Formspree -->
+            <input type="hidden" name="_subject"            id="fieldSubject"    value="Nouvelle inscription EPRS">
+            <input type="hidden" name="_next"               id="fieldNext">
+            <input type="hidden" name="categorie_joueur"    id="fieldCategorie">
+            <input type="hidden" name="date_signature"      id="fieldDateSign">
+
+            <!-- ════════════ ÉTAPE 1 — JOUEUR ════════════ -->
+            <div class="form-step active" id="step1">
+              <h2 class="step-heading">Le joueur</h2>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="nomJoueur">Nom du joueur <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="nomJoueur" name="nom_joueur" autocomplete="family-name" aria-required="true">
+                  <div class="field-error" id="err_nomJoueur" role="alert"></div>
+                </div>
+                <div class="field-group">
+                  <label for="prenomJoueur">Prénom du joueur <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="prenomJoueur" name="prenom_joueur" autocomplete="given-name" aria-required="true">
+                  <div class="field-error" id="err_prenomJoueur" role="alert"></div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="dateNaissance">Date de naissance <span class="req" aria-hidden="true">*</span></label>
+                <input type="date" id="dateNaissance" name="date_naissance" min="2007-01-01" max="2020-12-31" aria-required="true">
+                <div class="field-error" id="err_dateNaissance" role="alert"></div>
+                <div id="categoryDisplay" class="category-display" aria-live="polite" hidden>
+                  <span class="category-badge" id="categoryBadge"></span>
+                  <div class="mutation-alert" id="mutationAlert" hidden></div>
+                  <!-- Photo de la catégorie -->
+                  <div class="cat-photo-wrapper" id="catPhotoWrapper">
+                    <img class="cat-photo" id="catPhoto" src="" alt=""
+                         onerror="this.style.display='none'; this.nextElementSibling.removeAttribute('hidden')">
+                    <div class="img-placeholder" hidden>
+                      <span aria-hidden="true">📷</span>
+                      <span>Photo à venir</span>
+                    </div>
+                    <p class="cat-photo-caption" id="catPhotoCaption"></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="villeNaissance">Ville de naissance <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="villeNaissance" name="ville_naissance" aria-required="true">
+                  <div class="field-error" id="err_villeNaissance" role="alert"></div>
+                </div>
+                <div class="field-group">
+                  <label for="cpNaissance">Code postal de naissance <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="cpNaissance" name="cp_naissance" maxlength="5" inputmode="numeric" aria-required="true">
+                  <div class="field-error" id="err_cpNaissance" role="alert"></div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="villeResidence">Ville de résidence <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="villeResidence" name="ville_residence" aria-required="true">
+                <div class="field-error" id="err_villeResidence" role="alert"></div>
+              </div>
+
+              <div class="field-group">
+                <fieldset>
+                  <legend>Sexe <span class="req" aria-hidden="true">*</span></legend>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="sexe" value="Garçon">
+                      <span class="radio-btn">Garçon</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="sexe" value="Fille">
+                      <span class="radio-btn">Fille</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <div class="field-error" id="err_sexe" role="alert"></div>
+              </div>
+
+              <div class="step-nav step-nav--end">
+                <button type="button" class="btn btn--next" onclick="nextStep(1)">Étape suivante →</button>
+              </div>
+            </div>
+
+            <!-- ════════════ ÉTAPE 2 — PARENT ════════════ -->
+            <div class="form-step" id="step2">
+              <h2 class="step-heading">Parent / Tuteur légal</h2>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="nomParent">Nom <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="nomParent" name="nom_parent" aria-required="true">
+                  <div class="field-error" id="err_nomParent" role="alert"></div>
+                </div>
+                <div class="field-group">
+                  <label for="prenomParent">Prénom <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="prenomParent" name="prenom_parent" aria-required="true">
+                  <div class="field-error" id="err_prenomParent" role="alert"></div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="lienParent">Lien avec le joueur <span class="req" aria-hidden="true">*</span></label>
+                <select id="lienParent" name="lien_parent" aria-required="true">
+                  <option value="">— Choisissez —</option>
+                  <option value="Père">Père</option>
+                  <option value="Mère">Mère</option>
+                  <option value="Tuteur légal">Tuteur légal</option>
+                </select>
+                <div class="field-error" id="err_lienParent" role="alert"></div>
+              </div>
+
+              <div class="field-group">
+                <label for="telephone">Téléphone mobile <span class="req" aria-hidden="true">*</span></label>
+                <input type="tel" id="telephone" name="telephone" placeholder="06 XX XX XX XX" inputmode="tel" aria-required="true">
+                <div class="field-hint">Commence par 06 ou 07 — 10 chiffres</div>
+                <div class="field-error" id="err_telephone" role="alert"></div>
+              </div>
+
+              <div class="field-group">
+                <label for="email">Adresse email <span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" aria-required="true">
+                <div class="field-error" id="err_email" role="alert"></div>
+              </div>
+
+              <div class="field-group">
+                <label for="clubSaison">Club du joueur en 2024/2025 <span class="req" aria-hidden="true">*</span></label>
+                <select id="clubSaison" name="club_saison_2024_2025" aria-required="true">
+                  <option value="">— Choisissez —</option>
+                  <option value="EPRS">EPRS</option>
+                  <option value="1ère licence">1ère licence</option>
+                  <option value="Autre club">Autre club</option>
+                </select>
+                <div class="field-error" id="err_clubSaison" role="alert"></div>
+              </div>
+
+              <div class="field-group" id="nomClubGroup" hidden>
+                <label for="nomClub">Nom du club précédent <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="nomClub" name="nom_club_precedent">
+                <div class="field-error" id="err_nomClub" role="alert"></div>
+              </div>
+
+              <div class="field-group">
+                <label for="commentaire">Commentaire / question <span class="opt">(optionnel)</span></label>
+                <textarea id="commentaire" name="commentaire" rows="3" placeholder="Des questions ? Quelque chose à préciser ?"></textarea>
+              </div>
+
+              <div class="step-nav">
+                <button type="button" class="btn btn--back" onclick="prevStep(2)">← Retour</button>
+                <button type="button" class="btn btn--next" onclick="nextStep(2)">Étape suivante →</button>
+              </div>
+            </div>
+
+            <!-- ════════════ ÉTAPE 3 — DÉMARCHES ════════════ -->
+            <div class="form-step" id="step3">
+              <h2 class="step-heading">Démarches &amp; engagements</h2>
+
+              <div class="info-cards">
+                <div class="info-card">
+                  <div class="info-card-top">
+                    <span class="card-num">1</span>
+                    <span class="card-icon" aria-hidden="true">📋</span>
+                  </div>
+                  <h3>Demande de licence FFF</h3>
+                  <p>Ce formulaire ne constitue pas la demande de licence officielle. Vous recevrez un email de la FFF à l'adresse indiquée pour valider la licence de votre enfant auprès des instances fédérales.</p>
+                </div>
+
+                <div class="info-card">
+                  <div class="info-card-top">
+                    <span class="card-num">2</span>
+                    <span class="card-icon" aria-hidden="true">💳</span>
+                  </div>
+                  <h3>Paiement de la cotisation</h3>
+                  <p>Le club utilise l'application SportEasy pour gérer les cotisations. Si vous n'avez pas encore de compte, un email d'invitation vous sera envoyé automatiquement. Le paiement s'effectue directement depuis l'application, en toute sécurité.</p>
+                  <a href="https://sporteasy.net" target="_blank" rel="noopener noreferrer" class="card-link">En savoir plus sur SportEasy →</a>
+                </div>
+
+                <div class="info-card">
+                  <div class="info-card-top">
+                    <span class="card-num">3</span>
+                    <span class="card-icon" aria-hidden="true">👤</span>
+                  </div>
+                  <h3>Prise de contact</h3>
+                  <p>Une fois votre demande reçue, l'éducateur responsable de la catégorie de votre enfant vous contactera directement.</p>
+                </div>
+              </div>
+
+              <div class="checkboxes-section">
+                <label class="checkbox-option">
+                  <input type="checkbox" id="checkDemarche" name="check_demarche">
+                  <span class="checkbox-box" aria-hidden="true"></span>
+                  <span class="checkbox-text">J'ai lu et compris les étapes de la démarche d'inscription</span>
+                </label>
+                <div class="field-error" id="err_checkDemarche" role="alert"></div>
+
+                <label class="checkbox-option">
+                  <input type="checkbox" id="checkRGPD" name="check_rgpd">
+                  <span class="checkbox-box" aria-hidden="true"></span>
+                  <span class="checkbox-text">J'accepte que les données saisies soient utilisées dans le cadre de la gestion administrative et sportive du club EPRS</span>
+                </label>
+                <div class="field-error" id="err_checkRGPD" role="alert"></div>
+              </div>
+
+              <div class="step-nav">
+                <button type="button" class="btn btn--back" onclick="prevStep(3)">← Retour</button>
+                <button type="button" class="btn btn--next" onclick="nextStep(3)">Étape suivante →</button>
+              </div>
+            </div>
+
+            <!-- ════════════ ÉTAPE 4 — DROIT À L'IMAGE & VALIDATION ════════════ -->
+            <div class="form-step" id="step4">
+              <h2 class="step-heading">Droit à l'image &amp; Validation</h2>
+
+              <!-- Récapitulatif complet (mis à jour en direct) -->
+              <div class="summary-section">
+                <h3 class="summary-title">📋 Récapitulatif de votre demande</h3>
+                <div id="summaryContent" class="summary-grid"></div>
+              </div>
+
+              <!-- Bloc droit à l'image -->
+              <div class="image-rights-section">
+                <h3 class="image-rights-title">📸 Autorisation de droit à l'image</h3>
+
+                <div class="legal-text" tabindex="0" role="region" aria-label="Texte légal droit à l'image">
+                  <p>Je soussigné(e), représentant(e) légal(e) du joueur mentionné dans ce formulaire, autorise / n'autorise pas l'<strong>EPRS (Entente Petit-Réderching Siersthal)</strong> à utiliser les photographies et vidéos sur lesquelles apparaît mon enfant, dans le cadre des activités du club.</p>
+                  <p style="margin-top:0.6rem">Ces images pourront être utilisées sur les supports suivants :</p>
+                  <ul>
+                    <li>Site internet et réseaux sociaux du club (Facebook, Instagram)</li>
+                    <li>Supports de communication internes (affiches, programmes)</li>
+                    <li>Presse locale sportive</li>
+                  </ul>
+                  <p style="margin-top:0.6rem">Cette autorisation est accordée à titre gratuit pour la durée de la <strong>saison 2025/2026</strong>. Elle peut être révoquée à tout moment par écrit auprès du responsable du club.</p>
+                </div>
+
+                <div class="field-group">
+                  <fieldset>
+                    <legend>Votre décision <span class="req" aria-hidden="true">*</span></legend>
+                    <div class="radio-group radio-group--column">
+                      <label class="radio-option radio-option--green">
+                        <input type="radio" name="droit_image" value="Autorisé" id="droitOui">
+                        <span class="radio-btn">✅ J'AUTORISE la diffusion des images de mon enfant</span>
+                      </label>
+                      <label class="radio-option radio-option--red">
+                        <input type="radio" name="droit_image" value="Non autorisé" id="droitNon">
+                        <span class="radio-btn">❌ Je N'AUTORISE PAS la diffusion des images de mon enfant</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <div class="info-bubble" id="refusalBubble" hidden>
+                    💙 Votre choix est respecté et noté. Cela n'affecte pas l'inscription de votre enfant au club.
+                  </div>
+                  <div class="field-error" id="err_droitImage" role="alert"></div>
+                </div>
+
+                <div class="field-group">
+                  <label for="signatureElec">Signature électronique — Saisir votre Nom et Prénom <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="signatureElec" name="signature_electronique" placeholder="Ex : DUPONT Marie" aria-required="true" autocomplete="name">
+                  <div class="field-hint">En saisissant votre nom, vous confirmez avoir lu et accepté les conditions ci-dessus.</div>
+                  <div class="field-error" id="err_signatureElec" role="alert"></div>
+                </div>
+
+                <div class="field-group">
+                  <label>Date de signature</label>
+                  <div class="date-display" id="signatureDateDisplay" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <div class="step-nav">
+                <button type="button" class="btn btn--back" onclick="prevStep(4)">← Retour</button>
+                <button type="submit" class="btn btn--submit">Envoyer ma demande ⚽</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <svg class="footer-logo" viewBox="0 0 60 60" aria-hidden="true">
+          <circle cx="30" cy="30" r="28" fill="#1a3a6b"/>
+          <text x="30" y="36" text-anchor="middle" fill="white" font-family="Oswald,sans-serif" font-size="11" font-weight="700">EPRS</text>
+        </svg>
+        <div>
+          <p><strong>EPRS — Entente Petit-Réderching Siersthal</strong></p>
+          <p>Pays de Bitche, Moselle</p>
+          <p>Contact : <a href="mailto:guillaume.sumann@gmail.com">guillaume.sumann@gmail.com</a></p>
+        </div>
+      </div>
+      <p class="footer-copy">© 2025 EPRS Football — Inscriptions jeunes saison 2025/2026</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
