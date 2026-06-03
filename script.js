@@ -3,7 +3,7 @@
    script.js
    ============================================= */
 
-const FORMSPREE_ENDPOINT = "REMPLACER_PAR_TON_ENDPOINT_FORMSPREE";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mykayywn";
 
 // ── Catégories par année de naissance (saison 2025/2026) ──
 const CATEGORIES = {
