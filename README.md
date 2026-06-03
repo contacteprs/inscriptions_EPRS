@@ -158,6 +158,10 @@ Au début de chaque nouvelle saison, mets à jour les éléments suivants :
 - [ ] Mettre à jour l'objet de l'email de réponse automatique
 - [ ] Mettre à jour la date limite de mutation dans le corps du message
 - [ ] Mettre à jour les coordonnées des éducateurs si elles ont changé
+  > Les coordonnées sont dans `script.js` dans la constante `EDUCATEURS`.
+  > Elles sont injectées automatiquement dans les champs cachés `nom_educateur`
+  > et `tel_educateur` envoyés avec le formulaire.
+  > Dans le template Formspree (auto-réponse), utiliser : `{nom_educateur}` et `{tel_educateur}`.
 - [ ] Mettre à jour la saison dans le texte du droit à l'image (`2026/2027` → `2026/2027`)
 
 ---

@@ -679,6 +679,28 @@ input.error, select.error, textarea.error {
   color: var(--blue);
   font-weight: 700;
 }
+.educateur-contact {
+  margin-top: 0.65rem;
+  background: #edf3fb;
+  border: 1px solid #c5d4ef;
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.educateur-line {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+}
+.educateur-tel-link {
+  color: var(--blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+.educateur-tel-link:hover { text-decoration: underline; }
 
 /* ── Cases à cocher ── */
 .checkboxes-section {

@@ -36,6 +36,18 @@ const CATEGORY_IMAGES = {
 // Seules U7, U9, U11 sont exemptées de l'alerte mutation
 const MUTATION_CATEGORIES = ['U13', 'U15', 'U16', 'U17', 'Senior'];
 
+// Coordonnées des éducateurs par catégorie
+const EDUCATEURS = {
+  U7:     { nom: "Marc Hoffmann",    tel: "0612345678" },
+  U9:     { nom: "Sophie Klein",     tel: "0623456789" },
+  U11:    { nom: "Thierry Burger",   tel: "0634567890" },
+  U13:    { nom: "Nathalie Schmitt", tel: "0645678901" },
+  U15:    { nom: "Pascal Muller",    tel: "0656789012" },
+  U16:    { nom: "Isabelle Wagner",  tel: "0667890123" },
+  U17:    { nom: "Julien Becker",    tel: "0678901234" },
+  Senior: { nom: "Christine Faber", tel: "0689012345" },
+};
+
 let currentStep = 1;
 let isSenior    = false; // true si catégorie Senior (né en 2008 ou avant)
 
@@ -134,6 +146,27 @@ function prevStep(n) {
   currentStep = n - 1;
   updateProgress(currentStep);
   window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
+}
+
+// ── Éducateur : affichage carte + champs cachés ──
+function updateEducateurDisplay(cat) {
+  const edu   = EDUCATEURS[cat] || null;
+  const info  = document.getElementById('educateurInfo');
+  const nomEl = document.getElementById('educateurNom');
+  const telEl = document.getElementById('educateurTel');
+
+  if (edu) {
+    nomEl.textContent = edu.nom;
+    telEl.textContent = edu.tel;
+    telEl.href = 'tel:' + edu.tel;
+    info.hidden = false;
+    document.getElementById('fieldNomEducateur').value = edu.nom;
+    document.getElementById('fieldTelEducateur').value = edu.tel;
+  } else {
+    info.hidden = true;
+    document.getElementById('fieldNomEducateur').value = '';
+    document.getElementById('fieldTelEducateur').value = '';
+  }
 }
 
 // ── Compte à rebours ──
@@ -276,6 +309,9 @@ function onDateChange() {
 
   // Message humoristique pour les Seniors nés en 1995 ou avant
   document.getElementById('veteranHumor').hidden = (year > 1995);
+
+  // Coordonnées éducateur
+  updateEducateurDisplay(cat);
 
   // Photo de la catégorie
   const imgSrc = CATEGORY_IMAGES[cat];

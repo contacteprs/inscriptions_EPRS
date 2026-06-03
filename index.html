@@ -178,6 +178,8 @@
             <input type="hidden" name="_next"               id="fieldNext">
             <input type="hidden" name="categorie_joueur"    id="fieldCategorie">
             <input type="hidden" name="date_signature"      id="fieldDateSign">
+            <input type="hidden" name="nom_educateur"       id="fieldNomEducateur">
+            <input type="hidden" name="tel_educateur"       id="fieldTelEducateur">
 
             <!-- ════════════ ÉTAPE 1 — JOUEUR ════════════ -->
             <div class="form-step active" id="step1">
@@ -364,7 +366,17 @@
                     <span class="card-icon" aria-hidden="true">👤</span>
                   </div>
                   <h3>Prise de contact</h3>
-                  <p>Une fois votre demande reçue, l'éducateur responsable de la catégorie de votre enfant vous contactera directement.</p>
+                  <p>Une fois votre demande reçue, l'éducateur responsable de votre catégorie vous contactera directement.</p>
+                  <div class="educateur-contact" id="educateurInfo" hidden>
+                    <div class="educateur-line">
+                      <span aria-hidden="true">👤</span>
+                      <strong id="educateurNom"></strong>
+                    </div>
+                    <div class="educateur-line">
+                      <span aria-hidden="true">📱</span>
+                      <a id="educateurTel" href="" class="educateur-tel-link"></a>
+                    </div>
+                  </div>
                 </div>
               </div>
 
