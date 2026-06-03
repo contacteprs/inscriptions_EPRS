@@ -135,7 +135,10 @@ document.addEventListener('DOMContentLoaded', function () {
         categorie:      categorie,
         nom_educateur:  document.getElementById('fieldNomEducateur').value,
         tel_educateur:  document.getElementById('fieldTelEducateur').value,
+      }).then(function () {
+        console.log('EmailJS envoyé');
       }).catch(function (err) {
+        console.log('EmailJS erreur', err);
         console.error('EmailJS:', err);
       });
 
