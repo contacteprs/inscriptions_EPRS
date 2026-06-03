@@ -93,32 +93,71 @@ document.addEventListener('DOMContentLoaded', function () {
   // Signature en direct → mise à jour résumé
   document.getElementById('signatureElec').addEventListener('input', buildSummary);
 
-  // Soumission : mise à jour _subject + stockage sessionStorage
+  // Soumission : AJAX Formspree → EmailJS → redirect
   form.addEventListener('submit', function (e) {
-    if (!validateStep4()) {
-      e.preventDefault();
-      return;
-    }
-    const prenom = val('prenomJoueur');
-    const nom    = val('nomJoueur');
-    document.getElementById('fieldSubject').value =
-      'Nouvelle inscription EPRS — ' + prenom + ' ' + nom.toUpperCase();
+    e.preventDefault();
+    if (!validateStep4()) return;
 
+    // ── Prépare les champs cachés ──
+    const prenom     = val('prenomJoueur');
+    const nom        = val('nomJoueur');
     const categorie  = document.getElementById('categoryBadge').textContent.replace('Catégorie : ', '').trim();
     const droitImg   = (document.querySelector('input[name="droit_image"]:checked') || {}).value || '—';
     const signature  = val('signatureElec').trim();
     const dateSign   = document.getElementById('fieldDateSign').value;
+    const prenomContact = isSenior ? prenom : val('prenomParent');
 
+    document.getElementById('fieldSubject').value   = 'Nouvelle inscription EPRS — ' + prenom + ' ' + nom.toUpperCase();
     document.getElementById('fieldCategorie').value = categorie;
 
+    // ── Stocke pour page confirmation ──
     sessionStorage.setItem('eprs_registration', JSON.stringify({
       categorie,
       prenomJoueur: prenom,
-      prenomParent: isSenior ? prenom : val('prenomParent'), // email "Bonjour X"
+      prenomParent: prenomContact,
       droitImage: droitImg,
       signature,
       dateSign,
     }));
+
+    // ── UI : état chargement ──
+    const submitBtn = form.querySelector('.btn--submit');
+    const errorBox  = document.getElementById('submitError');
+    submitBtn.disabled    = true;
+    submitBtn.textContent = '⏳ Envoi en cours…';
+    errorBox.hidden       = true;
+
+    // ── 1. Formspree (AJAX) ──
+    fetch(FORMSPREE_ENDPOINT, {
+      method:  'POST',
+      body:    new FormData(form),
+      headers: { 'Accept': 'application/json' },
+    })
+    .then(function (res) {
+      if (!res.ok) throw new Error('Formspree ' + res.status);
+
+      // ── 2. EmailJS (fire-and-forget, ne bloque pas la redirect) ──
+      emailjs.send('service_p7jxxvn', '8mwemee', {
+        email:          val('email'),
+        prenom_parent:  prenomContact,
+        prenom_joueur:  prenom,
+        categorie:      categorie,
+        nom_educateur:  document.getElementById('fieldNomEducateur').value,
+        tel_educateur:  document.getElementById('fieldTelEducateur').value,
+      }).catch(function (err) {
+        console.error('EmailJS:', err);
+      });
+
+      // ── 3. Redirect vers page confirmation ──
+      window.location.href = document.getElementById('fieldNext').value;
+    })
+    .catch(function (err) {
+      console.error('Formspree:', err);
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Envoyer ma demande ⚽';
+      errorBox.hidden       = false;
+      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   });
 });
 
