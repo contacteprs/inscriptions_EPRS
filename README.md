@@ -1,4 +1,4 @@
-# EPRS Football — Site d'inscription 2025/2026
+# EPRS Football — Site d'inscription 2026/2027
 
 Formulaire d'inscription en ligne pour les jeunes du club **Entente Petit-Réderching Siersthal (EPRS)**, hébergé sur GitHub Pages.
 
@@ -29,14 +29,14 @@ Dans le tableau de bord Formspree, onglet **"Settings" > "Auto-Response"**, acti
 
 **Objet :**
 ```
-✅ Demande d'inscription EPRS 2025/2026 reçue
+✅ Demande d'inscription EPRS 2026/2027 reçue
 ```
 
 **Corps du message :**
 ```
 Bonjour {prenom_parent},
 
-Nous avons bien reçu la demande d'inscription de {prenom_joueur} pour la saison 2025/2026.
+Nous avons bien reçu la demande d'inscription de {prenom_joueur} pour la saison 2026/2027.
 Merci et bienvenue dans la famille EPRS !
 
 📞 L'éducateur responsable de la catégorie de votre enfant vous contactera prochainement :
@@ -54,7 +54,7 @@ Merci et bienvenue dans la famille EPRS !
 
 3. Contact éducateur — Il reviendra vers vous rapidement pour confirmer l'intégration de {prenom_joueur} dans l'équipe.
 
-⚠️ Rappel si mutation : si votre enfant rejoint l'EPRS depuis un autre club en catégorie U13, U15, U16 ou U17, la date limite de mutation est le 15 juillet 2025. Passé le 15 juillet 2025, votre dossier sera traité en mutation hors délai. Cette procédure est plus contraignante : elle nécessite l'accord du club quitté et est soumise à validation par le District. Nous vous conseillons vivement de déposer votre demande avant cette date.
+⚠️ Rappel si mutation : si votre enfant rejoint l'EPRS depuis un autre club en catégorie U13, U15, U16 ou U17, la date limite de mutation est le 15 juillet 2026. Passé le 15 juillet 2026, votre dossier sera traité en mutation hors délai. Cette procédure est plus contraignante : elle nécessite l'accord du club quitté et est soumise à validation par le District. Nous vous conseillons vivement de déposer votre demande avant cette date.
 
 📸 Droit à l'image : {droit_image}
 ✍️ Signé électroniquement par : {signature_electronique}
@@ -91,7 +91,7 @@ cd ~/Documents/eprs-inscription
 git add index.html style.css script.js confirmation.html README.md
 
 # 3. Premier commit
-git commit -m "feat: site d'inscription EPRS 2025/2026"
+git commit -m "feat: site d'inscription EPRS 2026/2027"
 
 # 4. Créer le dépôt sur GitHub
 #    Rends-toi sur https://github.com/new
@@ -121,30 +121,30 @@ git push -u origin main
 Au début de chaque nouvelle saison, mets à jour les éléments suivants :
 
 ### Dans `index.html`
-- [ ] Titre de la page (`<title>`) : `2025/2026` → `2026/2027`
-- [ ] Texte hero : `"La saison 2025/2026 approche…"`
+- [ ] Titre de la page (`<title>`) : `2026/2027` → `2027/2028`
+- [ ] Texte hero : `"La saison 2027/2028 approche…"`
 - [ ] Bannière alerte info : texte d'ouverture des inscriptions
-- [ ] Bannière alerte warning : date limite de mutation (ex. : `15 juillet 2026`)
-- [ ] Label select club : `"Club du joueur en 2024/2025"` → `"Club du joueur en 2025/2026"`
+- [ ] Bannière alerte warning : date limite de mutation (ex. : `15 juillet 2027`)
+- [ ] Label select club : `"Club du joueur en 2025/2026"` → `"Club du joueur en 2026/2027"`
 - [ ] Option select EPRS : `"EPRS"` reste, mais les autres valeurs peuvent évoluer
-- [ ] Footer copyright : `© 2025` → `© 2026`
+- [ ] Footer copyright : `© 2026` → `© 2027`
 
 ### Dans `script.js`
 - [ ] Table `CATEGORIES` : **ajouter 1 an à chaque fourchette de naissance** (règle universelle)
   ```js
-  // Exemple pour 2026/2027 :
-  2021: 'U7',  2020: 'U7',
-  2019: 'U9',  2018: 'U9',
-  2017: 'U11', 2016: 'U11',
-  2015: 'U13', 2014: 'U13',
-  2013: 'U15', 2012: 'U15',
-  2011: 'U16',
-  2010: 'U17',
-  2009: 'Senior', 2008: 'Senior',
+  // Exemple pour 2027/2028 :
+  2022: 'U7',  2021: 'U7',
+  2020: 'U9',  2019: 'U9',
+  2018: 'U11', 2017: 'U11',
+  2016: 'U13', 2015: 'U13',
+  2014: 'U15', 2013: 'U15',
+  2012: 'U16',
+  2011: 'U17',
+  // 2010 et avant → Senior
   ```
 - [ ] Validation `dateNaissance` : ajuster `min` et `max` (+1 an)
   ```
-  min="2008-01-01" max="2021-12-31"
+  min="2009-01-01" max="2022-12-31"
   ```
 
 ### Dans `confirmation.html`
@@ -158,7 +158,7 @@ Au début de chaque nouvelle saison, mets à jour les éléments suivants :
 - [ ] Mettre à jour l'objet de l'email de réponse automatique
 - [ ] Mettre à jour la date limite de mutation dans le corps du message
 - [ ] Mettre à jour les coordonnées des éducateurs si elles ont changé
-- [ ] Mettre à jour la saison dans le texte du droit à l'image (`2025/2026` → `2026/2027`)
+- [ ] Mettre à jour la saison dans le texte du droit à l'image (`2026/2027` → `2026/2027`)
 
 ---
 
@@ -200,25 +200,25 @@ eprs-inscription/
 
 ---
 
-## 📋 Catégories (saison 2025/2026)
+## 📋 Catégories (saison 2026/2027)
 
 L'EPRS regroupe les catégories par deux pour les jeunes, puis passe en individuel à partir de U16.
 
-| Année de naissance | Catégorie EPRS | Note                         |
-|--------------------|----------------|------------------------------|
-| 2020 ou 2019       | U7             | Regroupe U6 + U7             |
-| 2018 ou 2017       | U9             | Regroupe U8 + U9             |
-| 2016 ou 2015       | U11            | Regroupe U10 + U11           |
-| 2014 ou 2013       | U13            | Regroupe U12 + U13 ⚠️ mutation |
-| 2012 ou 2011       | U15            | Regroupe U14 + U15 ⚠️ mutation |
-| 2010               | U16            | ⚠️ mutation                  |
-| 2009               | U17            | ⚠️ mutation                  |
-| 2008 ou avant      | Senior         | Pas de mutation spécifique   |
+| Année de naissance | Catégorie EPRS | Note                           |
+|--------------------|----------------|--------------------------------|
+| 2021 ou 2020       | U7             | Regroupe U6 + U7               |
+| 2019 ou 2018       | U9             | Regroupe U8 + U9               |
+| 2017 ou 2016       | U11            | Regroupe U10 + U11             |
+| 2015 ou 2014       | U13            | Regroupe U12 + U13 ⚠️ mutation |
+| 2013 ou 2012       | U15            | Regroupe U14 + U15 ⚠️ mutation |
+| 2011               | U16            | ⚠️ mutation                    |
+| 2010               | U17            | ⚠️ mutation                    |
+| 2009 ou avant      | Senior         | ⚠️ mutation                    |
 
-> ⚠️ Les catégories **U13, U15, U16 et U17** sont soumises à la procédure de mutation si le joueur vient d'un autre club (date limite : 15 juillet 2025).  
-> Les catégories U7, U9, U11 et Senior ne sont **pas** concernées par cette limite.
+> ⚠️ Les catégories **U13, U15, U16, U17 et Senior** sont soumises à la procédure de mutation si le joueur vient d'un autre club (date limite : 15 juillet 2026).  
+> Les catégories U7, U9, U11 ne sont **pas** concernées par cette limite.
 
-**Règle annuelle :** chaque saison, ajouter 1 an à chaque fourchette de naissance (ex. U7 : 2019/2020 → 2020/2021).
+**Règle annuelle :** chaque saison, ajouter 1 an à chaque fourchette de naissance (ex. U7 : 2020/2021 → 2021/2022).
 
 ---
 

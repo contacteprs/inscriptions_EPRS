@@ -1,24 +1,24 @@
 /* =============================================
-   EPRS Football — Inscriptions 2025/2026
+   EPRS Football — Inscriptions 2026/2027
    script.js
    ============================================= */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mykayywn";
 
-// 15 juillet 2025 à 23h59 heure de Paris (CEST = UTC+2)
-const MUTATION_DEADLINE = new Date('2025-07-15T23:59:00+02:00');
+// 15 juillet 2026 à 23h59 heure de Paris (CEST = UTC+2)
+const MUTATION_DEADLINE = new Date('2026-07-15T23:59:00+02:00');
 let deadlinePassed = false;
 
-// ── Catégories par année de naissance (saison 2025/2026) ──
+// ── Catégories par année de naissance (saison 2026/2027) ──
 const CATEGORIES = {
-  2020: 'U7',  2019: 'U7',
-  2018: 'U9',  2017: 'U9',
-  2016: 'U11', 2015: 'U11',
-  2014: 'U13', 2013: 'U13',
-  2012: 'U15', 2011: 'U15',
-  2010: 'U16',
-  2009: 'U17',
-  // 2008 et avant → Senior (fallback dans onDateChange/getCategory)
+  2021: 'U7',  2020: 'U7',
+  2019: 'U9',  2018: 'U9',
+  2017: 'U11', 2016: 'U11',
+  2015: 'U13', 2014: 'U13',
+  2013: 'U15', 2012: 'U15',
+  2011: 'U16',
+  2010: 'U17',
+  // 2009 et avant → Senior (fallback dans onDateChange/getCategory)
 };
 
 // Photo associée à chaque catégorie
@@ -239,9 +239,14 @@ function onDateChange() {
 
   const year = new Date(raw).getFullYear();
 
-  if (year > 2020) {
+  if (year > 2021) {
     display.hidden = true;
     showError('dateNaissance', 'Cette date ne correspond à aucune catégorie. Contactez Guillaume directement.');
+    return;
+  }
+  if (year < 2008) {
+    display.hidden = true;
+    showError('dateNaissance', 'Cette date dépasse les catégories Senior. Contactez Guillaume directement.');
     return;
   }
 
@@ -262,7 +267,7 @@ function onDateChange() {
       const sujet = isSenior ? 'Vous êtes' : 'Votre enfant est';
       alert.innerHTML =
         '⚠️ ' + sujet + ' en catégorie <strong>' + cat + '</strong>. ' +
-        'La date limite de mutation est le <strong>15 juillet 2025</strong>.';
+        'La date limite de mutation est le <strong>15 juillet 2026</strong>.';
     }
     alert.hidden = false;
   } else {
@@ -282,7 +287,7 @@ function onDateChange() {
   ph.hidden = true;
   photo.src = imgSrc;
   photo.alt = 'Catégorie ' + cat + ' EPRS';
-  cap.textContent = 'Catégorie ' + cat + ' — saison 2025/2026';
+  cap.textContent = 'Catégorie ' + cat + ' — saison 2026/2027';
 }
 
 function getCategory() {
@@ -305,8 +310,11 @@ function validateStep1() {
     ok = false;
   } else {
     const year = new Date(dateInput.value).getFullYear();
-    if (year > 2020) {
+    if (year > 2021) {
       showError('dateNaissance', 'Cette date ne correspond à aucune catégorie. Contactez Guillaume directement.');
+      ok = false;
+    } else if (year < 2008) {
+      showError('dateNaissance', 'Cette date dépasse les catégories Senior. Contactez Guillaume directement.');
       ok = false;
     } else {
       clearError('dateNaissance');
@@ -383,7 +391,7 @@ function validateStep2() {
 
   const club = document.getElementById('clubSaison');
   if (!club.value) {
-    showError('clubSaison', 'Veuillez sélectionner le club de la saison 2024/2025.');
+    showError('clubSaison', 'Veuillez sélectionner le club de la saison 2025/2026.');
     club.classList.add('error');
     ok = false;
   } else {
@@ -465,7 +473,7 @@ function buildSummary() {
         : val('prenomParent') + ' ' + val('nomParent').toUpperCase() + ' (' + (val('lienParent') || '—') + ')' },
     { label: 'Téléphone',          value: val('telephone') },
     { label: 'Email',              value: val('email') },
-    { label: 'Club 2024/2025',     value: clubAffiche },
+    { label: 'Club 2025/2026',     value: clubAffiche },
     { label: 'Droit à l\'image',   value: droitImg },
     { label: 'Signature',          value: signature },
     { label: 'Date de signature',  value: dateSign },
