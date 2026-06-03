@@ -23,16 +23,6 @@ const CATEGORIES = {
 };
 
 // Photo associée à chaque catégorie
-const CATEGORY_IMAGES = {
-  'U7':     'images/u7.jpg',
-  'U9':     'images/u9.jpg',
-  'U11':    'images/u11.jpg',
-  'U13':    'images/u13.jpg',
-  'U15':    'images/u15.jpg',
-  'U16':    'images/u16.jpg',
-  'U17':    'images/u17.jpg',
-  'Senior': 'images/seniors.jpg',
-};
 
 // Seules U7, U9, U11 sont exemptées de l'alerte mutation
 const MUTATION_CATEGORIES = ['U13', 'U15', 'U16', 'U17', 'Senior'];
@@ -348,17 +338,6 @@ function onDateChange() {
   // Coordonnées éducateur
   updateEducateurDisplay(cat);
 
-  // Photo de la catégorie
-  const imgSrc = CATEGORY_IMAGES[cat];
-  const photo  = document.getElementById('catPhoto');
-  const ph     = photo.nextElementSibling; // placeholder div
-  const cap    = document.getElementById('catPhotoCaption');
-
-  photo.style.display = '';
-  ph.hidden = true;
-  photo.src = imgSrc;
-  photo.alt = 'Catégorie ' + cat + ' EPRS';
-  cap.textContent = 'Catégorie ' + cat + ' — saison 2026/2027';
 }
 
 function getCategory() {
