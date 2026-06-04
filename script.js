@@ -29,14 +29,14 @@ const MUTATION_CATEGORIES = ['U13', 'U15', 'U16', 'U17', 'Senior'];
 
 // Coordonnées des éducateurs par catégorie
 const EDUCATEURS = {
-  U7:     { nom: "Marc Hoffmann",    tel: "0612345678" },
-  U9:     { nom: "Sophie Klein",     tel: "0623456789" },
-  U11:    { nom: "Thierry Burger",   tel: "0634567890" },
-  U13:    { nom: "Nathalie Schmitt", tel: "0645678901" },
-  U15:    { nom: "Pascal Muller",    tel: "0656789012" },
-  U16:    { nom: "Isabelle Wagner",  tel: "0667890123" },
-  U17:    { nom: "Julien Becker",    tel: "0678901234" },
-  Senior: { nom: "Christine Faber", tel: "0689012345" },
+  U7:     { nom: "Guillaume Sumann", tel: "0676937328" },
+  U9:     { nom: "Claude Behr",      tel: "0688244029" },
+  U11:    { nom: "Gilles Steiner",   tel: "0670348580" },
+  U13:    { nom: "Guillaume Sumann", tel: "0676937328" },
+  U15:    { nom: "Guillaume Sumann", tel: "0676937328" },
+  U16:    { nom: "Mickael D'anna",   tel: "0632083768" },
+  U17:    { nom: "Lucas Homer",      tel: "0771667769" },
+  Senior: { nom: "Alexandre Neu",    tel: "0770707996" },
 };
 
 let currentStep = 1;
