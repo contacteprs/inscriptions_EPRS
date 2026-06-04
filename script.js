@@ -111,6 +111,14 @@ document.addEventListener('DOMContentLoaded', function () {
       dateSign,
     }));
 
+    // ── Capture les données avant le fetch (DOM encore accessible) ──
+    var formData = {
+      email:         document.getElementById('email').value,
+      prenom_parent: document.getElementById('prenomParent').value,
+      prenom_joueur: document.getElementById('prenomJoueur').value,
+      categorie:     categorie,
+    };
+
     // ── UI : état chargement ──
     const submitBtn = form.querySelector('.btn--submit');
     const errorBox  = document.getElementById('submitError');
@@ -128,20 +136,18 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!res.ok) throw new Error('Formspree ' + res.status);
 
       // ── 2. EmailJS (fire-and-forget, ne bloque pas la redirect) ──
-      var educateur = EDUCATEURS[categorie] || { nom: 'À définir', tel: 'À définir' };
+      var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
       var templateParams = {
-        email:          document.getElementById('email').value,
-        prenom_parent:  document.getElementById('prenomParent').value,
-        prenom_joueur:  document.getElementById('prenomJoueur').value,
-        categorie:      categorie,
-        nom_educateur:  educateur.nom,
-        tel_educateur:  educateur.tel,
+        email:         formData.email,
+        prenom_parent: formData.prenom_parent || formData.prenom_joueur,
+        prenom_joueur: formData.prenom_joueur,
+        categorie:     formData.categorie,
+        nom_educateur: educateur.nom,
+        tel_educateur: educateur.tel,
       };
-      emailjs.send('service_p7jxxvn', '8mwemee', templateParams).then(function () {
-        console.log('EmailJS envoyé avec succès');
-      }).catch(function (error) {
-        console.error('EmailJS erreur:', error);
-      });
+      emailjs.send('service_p7jxxvn', '8mwemee', templateParams)
+        .then(function () { console.log('Mail envoyé'); })
+        .catch(function (err) { console.error('Erreur mail:', err); });
 
       // ── 3. Redirect vers page confirmation ──
       window.location.href = document.getElementById('fieldNext').value;
