@@ -90,13 +90,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!validateStep4()) return;
 
     // ── Prépare les champs cachés ──
-    const prenom     = val('prenomJoueur');
+    const prenom     = val('prenom_joueur');
     const nom        = val('nomJoueur');
     const categorie  = document.getElementById('categoryBadge').textContent.replace('Catégorie : ', '').trim();
     const droitImg   = (document.querySelector('input[name="droit_image"]:checked') || {}).value || '—';
     const signature  = val('signatureElec').trim();
     const dateSign   = document.getElementById('fieldDateSign').value;
-    const prenomContact = isSenior ? prenom : val('prenomParent');
+    const prenomContact = isSenior ? prenom : val('prenom_parent');
 
     document.getElementById('fieldSubject').value   = 'Nouvelle inscription EPRS — ' + prenom + ' ' + nom.toUpperCase();
     document.getElementById('fieldCategorie').value = categorie;
@@ -111,11 +111,19 @@ document.addEventListener('DOMContentLoaded', function () {
       dateSign,
     }));
 
+    // ── Debug : vérification des champs avant envoi EmailJS ──
+    console.log("Données formulaire :", {
+      email:         document.getElementById('email')?.value,
+      prenom_parent: document.getElementById('prenom_parent')?.value,
+      prenom_joueur: document.getElementById('prenom_joueur')?.value,
+      categorie:     window.categorieSelectionnee,
+    });
+
     // ── Capture les données avant le fetch (DOM encore accessible) ──
     var formData = {
       email:         document.getElementById('email').value,
-      prenom_parent: document.getElementById('prenomParent').value,
-      prenom_joueur: document.getElementById('prenomJoueur').value,
+      prenom_parent: document.getElementById('prenom_parent').value,
+      prenom_joueur: document.getElementById('prenom_joueur').value,
       categorie:     categorie,
     };
 
@@ -321,6 +329,7 @@ function onDateChange() {
 
   const cat = CATEGORIES[year] || 'Senior';
   isSenior = (cat === 'Senior');
+  window.categorieSelectionnee = cat;
   badge.textContent = 'Catégorie : ' + cat;
   display.hidden = false;
 
@@ -363,7 +372,7 @@ function validateStep1() {
   let ok = true;
 
   if (!notEmpty('nomJoueur',    'Le nom du joueur est obligatoire.'))    ok = false;
-  if (!notEmpty('prenomJoueur', 'Le prénom du joueur est obligatoire.')) ok = false;
+  if (!notEmpty('prenom_joueur', 'Le prénom du joueur est obligatoire.')) ok = false;
 
   const dateInput = document.getElementById('dateNaissance');
   if (!dateInput.value) {
@@ -401,7 +410,7 @@ function validateStep2() {
   const nomMsg    = isSenior ? 'Votre nom est obligatoire.'    : 'Le nom du parent est obligatoire.';
   const prenomMsg = isSenior ? 'Votre prénom est obligatoire.' : 'Le prénom du parent est obligatoire.';
   if (!notEmpty('nomParent',    nomMsg))    ok = false;
-  if (!notEmpty('prenomParent', prenomMsg)) ok = false;
+  if (!notEmpty('prenom_parent', prenomMsg)) ok = false;
 
   if (!isSenior) {
     const lien = document.getElementById('lienParent');
@@ -509,7 +518,7 @@ function buildSummary() {
   const dateSign   = document.getElementById('fieldDateSign').value || '—';
 
   const rows = [
-    { label: 'Joueur',             value: val('prenomJoueur') + ' ' + val('nomJoueur').toUpperCase() },
+    { label: 'Joueur',             value: val('prenom_joueur') + ' ' + val('nomJoueur').toUpperCase() },
     { label: 'Date de naissance',  value: formatDate(val('dateNaissance')) },
     { label: 'Catégorie',          value: categorie },
     { label: 'Lieu de naissance',  value: val('villeNaissance') },
@@ -517,8 +526,8 @@ function buildSummary() {
     { label: 'Sexe',               value: (document.querySelector('input[name="sexe"]:checked') || {}).value || '—' },
     { label: isSenior ? 'Vos coordonnées' : 'Parent / tuteur',
       value: isSenior
-        ? val('prenomParent') + ' ' + val('nomParent').toUpperCase()
-        : val('prenomParent') + ' ' + val('nomParent').toUpperCase() + ' (' + (val('lienParent') || '—') + ')' },
+        ? val('prenom_parent') + ' ' + val('nomParent').toUpperCase()
+        : val('prenom_parent') + ' ' + val('nomParent').toUpperCase() + ' (' + (val('lienParent') || '—') + ')' },
     { label: 'Téléphone',          value: val('telephone') },
     { label: 'Email',              value: val('email') },
     { label: 'Club 2025/2026',     value: clubAffiche },
