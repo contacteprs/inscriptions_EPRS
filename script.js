@@ -140,49 +140,37 @@ document.addEventListener('DOMContentLoaded', function () {
       body:    new FormData(form),
       headers: { 'Accept': 'application/json' },
     })
-    .then(function (res) {
-      if (!res.ok) throw new Error('Formspree ' + res.status);
+    .then(function (response) {
+      if (response.ok) {
+        var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
+        var templateParams = {
+          email:         formData.email,
+          prenom_parent: formData.prenom_parent || formData.prenom_joueur,
+          prenom_joueur: formData.prenom_joueur,
+          categorie:     formData.categorie,
+          nom_educateur: educateur.nom,
+          tel_educateur: educateur.tel,
+        };
 
-      // ── 2. EmailJS (fire-and-forget, ne bloque pas la redirect) ──
-      var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
-      var templateParams = {
-        email:         formData.email,
-        prenom_parent: formData.prenom_parent || formData.prenom_joueur,
-        prenom_joueur: formData.prenom_joueur,
-        categorie:     formData.categorie,
-        nom_educateur: educateur.nom,
-        tel_educateur: educateur.tel,
-      };
-      console.log("EmailJS templateParams:", {
-        email:         templateParams.email,
-        prenom_parent: templateParams.prenom_parent,
-        prenom_joueur: templateParams.prenom_joueur,
-        categorie:     templateParams.categorie,
-        nom_educateur: templateParams.nom_educateur,
-        tel_educateur: templateParams.tel_educateur,
-      });
-      emailjs.send('service_p7jxxvn', '8mwemee', templateParams)
-        .then(function () { console.log('Mail envoyé'); })
-        .catch(function (err) { console.error('Erreur mail:', err); });
+        // ── 2. EmailJS (fire-and-forget) ──
+        emailjs.send('service_p7jxxvn', '8mwemee', templateParams)
+          .then(function () { console.log('Mail envoyé'); })
+          .catch(function (err) { console.error('Erreur mail:', err); });
 
-      // ── 3. Make.com webhook (fire-and-forget) ──
-      var makeWebhookUrl = "https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv";
-      fetch(makeWebhookUrl, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({
-          email:         templateParams.email,
-          prenom_parent: templateParams.prenom_parent,
-          prenom_joueur: templateParams.prenom_joueur,
-          categorie:     templateParams.categorie,
-          nom_educateur: templateParams.nom_educateur,
-          tel_educateur: templateParams.tel_educateur,
-        }),
-      }).then(function () { console.log('Make webhook envoyé'); })
-        .catch(function (err) { console.error('Make webhook erreur:', err); });
+        // ── 3. Make.com webhook (fire-and-forget) ──
+        var makeWebhookUrl = "https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv";
+        fetch(makeWebhookUrl, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(templateParams),
+        }).then(function () { console.log('Make webhook envoyé'); })
+          .catch(function (err) { console.error('Make webhook erreur:', err); });
 
-      // ── 4. Redirect vers page confirmation ──
-      window.location.href = document.getElementById('fieldNext').value;
+        // ── 4. Redirect vers page confirmation ──
+        window.location.href = document.getElementById('fieldNext').value;
+      } else {
+        throw new Error('Formspree ' + response.status);
+      }
     })
     .catch(function (err) {
       console.error('Formspree:', err);
