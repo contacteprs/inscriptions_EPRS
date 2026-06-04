@@ -165,7 +165,23 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function () { console.log('Mail envoyé'); })
         .catch(function (err) { console.error('Erreur mail:', err); });
 
-      // ── 3. Redirect vers page confirmation ──
+      // ── 3. Make.com webhook (fire-and-forget) ──
+      var makeWebhookUrl = "https://hook.eu1.make.com/1rp5hoj94zi60987joq5kdih4520qhpg";
+      fetch(makeWebhookUrl, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          email:         templateParams.email,
+          prenom_parent: templateParams.prenom_parent,
+          prenom_joueur: templateParams.prenom_joueur,
+          categorie:     templateParams.categorie,
+          nom_educateur: templateParams.nom_educateur,
+          tel_educateur: templateParams.tel_educateur,
+        }),
+      }).then(function () { console.log('Make webhook envoyé'); })
+        .catch(function (err) { console.error('Make webhook erreur:', err); });
+
+      // ── 4. Redirect vers page confirmation ──
       window.location.href = document.getElementById('fieldNext').value;
     })
     .catch(function (err) {
