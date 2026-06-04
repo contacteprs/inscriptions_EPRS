@@ -47,7 +47,7 @@
       </div>
 
       <h1 class="confirm-title">Demande envoy&#233;e ! &#127881;</h1>
-      <p class="confirm-subtitle" id="confirmSubtitle">Merci&nbsp;! L&#39;&#233;ducateur responsable de votre enfant vous contactera tr&#232;s prochainement.</p>
+      <p class="confirm-subtitle" id="confirmSubtitle">Merci&nbsp;! Votre demande a bien &#233;t&#233; enregistr&#233;e.</p>
 
       <div class="confirm-mutation-alert" id="confirmMutation" style="display:none">
         &#9888;&#65039; <strong>Rappel &#8212; Mutation :</strong>
@@ -72,7 +72,7 @@
           <div class="confirm-step-num" aria-hidden="true">1</div>
           <div>
             <strong>Licence FFF</strong><br>
-            <span id="confirmStep1Text">Votre enfant recevra un email de la FFF.</span>
+            <span id="confirmStep1Text">Vous recevrez un email de la FFF &#224; l&#39;adresse indiqu&#233;e pour valider la licence officielle.</span>
           </div>
         </div>
         <div class="confirm-step" role="listitem">
@@ -120,25 +120,11 @@
         var data   = JSON.parse(raw);
         var senior = (data.categorie === 'Senior');
 
-        // Message principal
-        var subtitle = document.getElementById('confirmSubtitle');
-        if (senior) {
-          subtitle.textContent = "Merci ! L'éducateur responsable vous contactera très prochainement.";
-        } else {
-          subtitle.textContent = "Merci ! L'éducateur responsable de votre enfant vous contactera très prochainement.";
-        }
-
         // Alerte mutation (Senior uniquement)
         if (senior && data.categorie && MUTATION_CATS.indexOf(data.categorie) !== -1) {
           var mutText = document.getElementById('confirmMutationText');
           mutText.textContent = " Vous êtes en catégorie Senior. La date limite de dépôt du dossier de mutation est le 15 juillet 2026.";
           document.getElementById('confirmMutation').style.display = 'block';
-        }
-
-        // Etape 1 : licence FFF
-        if (senior) {
-          document.getElementById('confirmStep1Text').textContent =
-            "Vous recevrez un email de la FFF pour valider votre licence officielle.";
         }
 
       } catch (e) {}
