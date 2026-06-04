@@ -159,12 +159,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // ── 3. Make.com webhook (fire-and-forget) ──
         var makeWebhookUrl = "https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv";
+        console.log("Tentative appel Make webhook...");
         fetch(makeWebhookUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify(templateParams),
-        }).then(function () { console.log('Make webhook envoyé'); })
-          .catch(function (err) { console.error('Make webhook erreur:', err); });
+        }).then(function (response) { console.log('Make webhook réponse:', response.status); })
+          .catch(function (error) { console.error('Make webhook erreur:', error); });
 
         // ── 4. Redirect vers page confirmation ──
         window.location.href = document.getElementById('fieldNext').value;
