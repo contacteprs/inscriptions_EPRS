@@ -3,8 +3,7 @@
    script.js
    ============================================= */
 
-// Google Sheets via Apps Script
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxmK_DxYFlRC10KVhhuQ_uakAuiF2GdEoM4n4gI_8jJKtOR_QBMQCbKLQs1DvQWnp-qSw/exec";
+const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv";
 
 // 15 juillet 2026 à 23h59 heure de Paris (CEST = UTC+2)
 const MUTATION_DEADLINE = new Date('2026-07-15T23:59:00+02:00');
@@ -132,16 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
     submitBtn.textContent = '⏳ Envoi en cours…';
 
     var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
-    var templateParams = {
-      email:         formData.email,
-      prenom_parent: formData.prenom_parent || formData.prenom_joueur,
-      prenom_joueur: formData.prenom_joueur,
-      categorie:     formData.categorie,
-      nom_educateur: educateur.nom,
-      tel_educateur: educateur.tel,
-    };
 
-    // ── 1. Google Sheets via Apps Script (fire-and-forget, no-cors) ──
+    // ── Make.com : Google Sheets + emails (payload complet) ──
     var payload = {
       nom_joueur:         val('nomJoueur'),
       prenom_joueur:      val('prenom_joueur'),
@@ -150,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ville_residence:    val('villeResidence'),
       sexe:               (document.querySelector('input[name="sexe"]:checked') || {}).value || '',
       nom_parent:         val('nomParent'),
-      prenom_parent:      val('prenom_parent'),
+      prenom_parent:      formData.prenom_parent || formData.prenom_joueur,
       lien_parent:        val('lienParent'),
       telephone:          val('telephone'),
       email:              formData.email,
@@ -165,13 +156,10 @@ document.addEventListener('DOMContentLoaded', function () {
       tel_educateur:      educateur.tel,
     };
 
-    envoyerVersGoogleSheets(payload);
-
-    // ── 2. Make.com webhook (fire-and-forget) ──
-    fetch("https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv", {
+    fetch(MAKE_WEBHOOK_URL, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(templateParams),
+      body:    JSON.stringify(payload),
     }).catch(function (err) { console.error('Make webhook:', err); });
 
     // ── 4. Redirect vers page confirmation ──
@@ -554,14 +542,6 @@ function buildSummary() {
       '<div class="s-value">' + (r.value || '—') + '</div>' +
       '</div>';
   }).join('');
-}
-
-// ── Envoi Google Sheets via formulaire statique caché ──
-function envoyerVersGoogleSheets(payload) {
-  var form = document.getElementById('gsheets-form');
-  form.action = GOOGLE_SHEETS_URL;
-  document.getElementById('gsheets-data').value = JSON.stringify(payload);
-  form.submit();
 }
 
 // ── Helpers ──
