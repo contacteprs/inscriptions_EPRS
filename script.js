@@ -3,7 +3,32 @@
    script.js
    ============================================= */
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/mykayywn";
+// URL de soumission Google Forms — remplacer FORM_ID par l'identifiant du formulaire
+const GOOGLE_FORMS_URL = "https://docs.google.com/forms/d/e/REMPLACER_PAR_FORM_ID/formResponse";
+
+// Entry IDs des champs Google Forms — récupérés via Inspecter sur l'aperçu du formulaire
+const GOOGLE_FORMS_ENTRIES = {
+  nom_joueur:         "entry.XXXXXXXXX",
+  prenom_joueur:      "entry.XXXXXXXXX",
+  date_naissance:     "entry.XXXXXXXXX",
+  ville_naissance:    "entry.XXXXXXXXX",
+  ville_residence:    "entry.XXXXXXXXX",
+  sexe:               "entry.XXXXXXXXX",
+  nom_parent:         "entry.XXXXXXXXX",
+  prenom_parent:      "entry.XXXXXXXXX",
+  lien_parent:        "entry.XXXXXXXXX",
+  telephone:          "entry.XXXXXXXXX",
+  email:              "entry.XXXXXXXXX",
+  club_saison:        "entry.XXXXXXXXX",
+  nom_club_precedent: "entry.XXXXXXXXX",
+  commentaire:        "entry.XXXXXXXXX",
+  droit_image:        "entry.XXXXXXXXX",
+  signature:          "entry.XXXXXXXXX",
+  date_signature:     "entry.XXXXXXXXX",
+  categorie:          "entry.XXXXXXXXX",
+  nom_educateur:      "entry.XXXXXXXXX",
+  tel_educateur:      "entry.XXXXXXXXX",
+};
 
 // 15 juillet 2026 à 23h59 heure de Paris (CEST = UTC+2)
 const MUTATION_DEADLINE = new Date('2026-07-15T23:59:00+02:00');
@@ -32,8 +57,8 @@ const EDUCATEURS = {
   U7:     { nom: "Guillaume Sumann", tel: "0676937328" },
   U9:     { nom: "Claude Behr",      tel: "0688244029" },
   U11:    { nom: "Gilles Steiner",   tel: "0670348580" },
-  U13:    { nom: "Guillaume Sumann", tel: "0676937328" },
-  U15:    { nom: "Guillaume Sumann", tel: "0676937328" },
+  U13:    { nom: "Maxime Collet",     tel: "0610373666" },
+  U15:    { nom: "Benjamin Neu",      tel: "0771948572" },
   U16:    { nom: "Mickael D'anna",   tel: "0632083768" },
   U17:    { nom: "Lucas Homer",      tel: "0771667769" },
   Senior: { nom: "Alexandre Neu",    tel: "0770707996" },
@@ -45,9 +70,7 @@ let isSenior    = false; // true si catégorie Senior (né en 2009 ou avant)
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('inscriptionForm');
-  form.action = FORMSPREE_ENDPOINT;
-
-  // _next dynamique (URL absolue requise par Formspree)
+  // URL de redirection après soumission
   document.getElementById('fieldNext').value =
     window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'confirmation.html';
 
@@ -129,57 +152,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ── UI : état chargement ──
     const submitBtn = form.querySelector('.btn--submit');
-    const errorBox  = document.getElementById('submitError');
     submitBtn.disabled    = true;
     submitBtn.textContent = '⏳ Envoi en cours…';
-    errorBox.hidden       = true;
 
-    // ── 1. Formspree (AJAX) ──
-    fetch(FORMSPREE_ENDPOINT, {
+    var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
+    var templateParams = {
+      email:         formData.email,
+      prenom_parent: formData.prenom_parent || formData.prenom_joueur,
+      prenom_joueur: formData.prenom_joueur,
+      categorie:     formData.categorie,
+      nom_educateur: educateur.nom,
+      tel_educateur: educateur.tel,
+    };
+
+    // ── 1. Google Forms (fire-and-forget, no-cors) ──
+    var gData = new FormData();
+    gData.append(GOOGLE_FORMS_ENTRIES.nom_joueur,         val('nomJoueur'));
+    gData.append(GOOGLE_FORMS_ENTRIES.prenom_joueur,      val('prenom_joueur'));
+    gData.append(GOOGLE_FORMS_ENTRIES.date_naissance,     val('dateNaissance'));
+    gData.append(GOOGLE_FORMS_ENTRIES.ville_naissance,    val('villeNaissance'));
+    gData.append(GOOGLE_FORMS_ENTRIES.ville_residence,    val('villeResidence'));
+    gData.append(GOOGLE_FORMS_ENTRIES.sexe,               (document.querySelector('input[name="sexe"]:checked') || {}).value || '');
+    gData.append(GOOGLE_FORMS_ENTRIES.nom_parent,         val('nomParent'));
+    gData.append(GOOGLE_FORMS_ENTRIES.prenom_parent,      val('prenom_parent'));
+    gData.append(GOOGLE_FORMS_ENTRIES.lien_parent,        val('lienParent'));
+    gData.append(GOOGLE_FORMS_ENTRIES.telephone,          val('telephone'));
+    gData.append(GOOGLE_FORMS_ENTRIES.email,              formData.email);
+    gData.append(GOOGLE_FORMS_ENTRIES.club_saison,        val('clubSaison'));
+    gData.append(GOOGLE_FORMS_ENTRIES.nom_club_precedent, val('nomClub'));
+    gData.append(GOOGLE_FORMS_ENTRIES.commentaire,        val('commentaire'));
+    gData.append(GOOGLE_FORMS_ENTRIES.droit_image,        (document.querySelector('input[name="droit_image"]:checked') || {}).value || '');
+    gData.append(GOOGLE_FORMS_ENTRIES.signature,          val('signatureElec'));
+    gData.append(GOOGLE_FORMS_ENTRIES.date_signature,     document.getElementById('fieldDateSign').value);
+    gData.append(GOOGLE_FORMS_ENTRIES.categorie,          formData.categorie);
+    gData.append(GOOGLE_FORMS_ENTRIES.nom_educateur,      educateur.nom);
+    gData.append(GOOGLE_FORMS_ENTRIES.tel_educateur,      educateur.tel);
+
+    fetch(GOOGLE_FORMS_URL, { method: 'POST', mode: 'no-cors', body: gData })
+      .catch(function (err) { console.error('Google Forms:', err); });
+
+    // ── 2. EmailJS — email de confirmation au parent (fire-and-forget) ──
+    emailjs.send('service_p7jxxvn', '8mwemee', templateParams)
+      .then(function () { console.log('Mail envoyé'); })
+      .catch(function (err) { console.error('Erreur mail:', err); });
+
+    // ── 3. Make.com webhook (fire-and-forget) ──
+    fetch("https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv", {
       method:  'POST',
-      body:    new FormData(form),
-      headers: { 'Accept': 'application/json' },
-    })
-    .then(function (response) {
-      if (response.ok) {
-        var educateur = EDUCATEURS[formData.categorie] || { nom: 'À définir', tel: 'À définir' };
-        var templateParams = {
-          email:         formData.email,
-          prenom_parent: formData.prenom_parent || formData.prenom_joueur,
-          prenom_joueur: formData.prenom_joueur,
-          categorie:     formData.categorie,
-          nom_educateur: educateur.nom,
-          tel_educateur: educateur.tel,
-        };
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(templateParams),
+    }).catch(function (err) { console.error('Make webhook:', err); });
 
-        // ── 2. EmailJS (fire-and-forget) ──
-        emailjs.send('service_p7jxxvn', '8mwemee', templateParams)
-          .then(function () { console.log('Mail envoyé'); })
-          .catch(function (err) { console.error('Erreur mail:', err); });
-
-        // ── 3. Make.com webhook (fire-and-forget) ──
-        var makeWebhookUrl = "https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv";
-        console.log("Tentative appel Make webhook...");
-        fetch(makeWebhookUrl, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(templateParams),
-        }).then(function (response) { console.log('Make webhook réponse:', response.status); })
-          .catch(function (error) { console.error('Make webhook erreur:', error); });
-
-        // ── 4. Redirect vers page confirmation ──
-        window.location.href = document.getElementById('fieldNext').value;
-      } else {
-        throw new Error('Formspree ' + response.status);
-      }
-    })
-    .catch(function (err) {
-      console.error('Formspree:', err);
-      submitBtn.disabled    = false;
-      submitBtn.textContent = 'Envoyer ma demande ⚽';
-      errorBox.hidden       = false;
-      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+    // ── 4. Redirect vers page confirmation ──
+    window.location.href = document.getElementById('fieldNext').value;
   });
 });
 
