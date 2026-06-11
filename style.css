@@ -941,6 +941,173 @@ input.error, select.error, textarea.error {
 }
 
 /* ══════════════════════════════════
+   CHARTE SPORTIVE (étape conditionnelle)
+══════════════════════════════════ */
+
+/* Barre de lecture */
+.charte-reading-wrap {
+  margin-bottom: 0.85rem;
+}
+.charte-reading-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+  margin-bottom: 0.35rem;
+}
+.charte-reading-pct {
+  font-variant-numeric: tabular-nums;
+  color: var(--red);
+}
+.charte-reading-bg {
+  height: 6px;
+  background: var(--gray);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.charte-reading-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--blue);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Zone de défilement */
+.charte-scroll-box {
+  background: white;
+  border: 1px solid var(--gray);
+  border-radius: 6px;
+  padding: 1.1rem 1.2rem;
+  max-height: 320px;
+  overflow-y: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--gray-dark);
+  scroll-behavior: smooth;
+  margin-bottom: 1rem;
+}
+.charte-scroll-box:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Hint de défilement */
+.charte-scroll-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+
+/* Titres de section dans la charte */
+.charte-section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 1.1rem 0 0.4rem;
+  border-bottom: 1px solid var(--gray);
+  padding-bottom: 0.25rem;
+}
+.charte-section-title:first-child { margin-top: 0; }
+
+/* Tableau des sanctions */
+.charte-table-wrap {
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+.charte-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.charte-table th {
+  background: var(--blue);
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.charte-table td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--gray);
+  vertical-align: top;
+}
+.charte-table tr:nth-child(even) td { background: #f0f4fa; }
+.charte-table td:first-child {
+  font-weight: 700;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+/* Checkbox + état désactivé */
+.charte-check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+#checkCharte {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+#checkCharte:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.charte-check-row label {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--gray-dark);
+  cursor: pointer;
+}
+#checkCharte:disabled + label {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Champ signature */
+#charteSignature {
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--gray);
+  border-radius: var(--radius);
+  background: white;
+  color: var(--text);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+#charteSignature:focus {
+  border-color: var(--blue);
+  outline: none;
+}
+
+/* ── Responsive tableau charte ── */
+@media (max-width: 640px) {
+  .charte-scroll-box { max-height: 260px; padding: 0.85rem 0.9rem; }
+  .charte-table th,
+  .charte-table td  { padding: 0.4rem 0.5rem; font-size: 0.78rem; }
+}
+
+/* ══════════════════════════════════
    PAGE CONFIRMATION
 ══════════════════════════════════ */
 .confirm-body {

@@ -24,8 +24,10 @@ const CATEGORIES = {
 
 // Photo associée à chaque catégorie
 
-// Seules U7, U9, U11 sont exemptées de l'alerte mutation
 const MUTATION_CATEGORIES = ['U13', 'U15', 'U16', 'U17', 'Senior'];
+
+// Catégories soumises à la charte sportive
+const CHARTE_CATEGORIES_PREFIXES = ['u15', 'u16', 'u17', 'senior'];
 
 // Coordonnées des éducateurs par catégorie
 const EDUCATEURS = {
@@ -39,8 +41,10 @@ const EDUCATEURS = {
   Senior: { nom: "Alexandre Neu",    tel: "0770707996" },
 };
 
-let currentStep = 1;
-let isSenior    = false; // true si catégorie Senior (né en 2009 ou avant)
+let currentStep    = 1;
+let isSenior       = false;
+let charteRequise  = false;
+let charteScrollPct = 0;
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function () {
@@ -48,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // URL de redirection après soumission
   document.getElementById('fieldNext').value =
     window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'confirmation.html';
+
+  // Listeners charte
+  document.getElementById('charteScrollBox').addEventListener('scroll', onCharteScroll);
+  document.getElementById('charteSignature').addEventListener('input', updateCharteBtn);
+  document.getElementById('checkCharte').addEventListener('change', updateCharteBtn);
 
   // Date de signature auto (date du jour)
   const today = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -154,6 +163,9 @@ document.addEventListener('DOMContentLoaded', function () {
       categorie:          formData.categorie,
       nom_educateur:      educateur.nom,
       tel_educateur:      educateur.tel,
+      charte_acceptee:    charteRequise ? document.getElementById('checkCharte').checked : false,
+      charte_signature:   charteRequise ? document.getElementById('charteSignature').value.trim() : '',
+      charte_timestamp:   charteRequise ? new Date().toISOString() : '',
     };
 
     // ── Envoi Make.com puis redirect (on attend la réponse avant de naviguer) ──
@@ -179,21 +191,56 @@ function nextStep(n) {
   if (!valid) return;
 
   document.getElementById('step' + n).classList.remove('active');
-  document.getElementById('step' + (n + 1)).classList.add('active');
-  currentStep = n + 1;
-  updateProgress(currentStep);
 
-  if (currentStep === 2) updateStep2ForCategory();
-  if (currentStep === 3) updateEducateurDisplay(getCategory());
-  if (currentStep === 4) { updateStep4ForCategory(); buildSummary(); }
+  if (n === 3 && charteRequise) {
+    document.getElementById('stepCharte').classList.add('active');
+    currentStep = 'charte';
+    updateProgress('charte');
+    onCharteScroll();
+  } else {
+    document.getElementById('step' + (n + 1)).classList.add('active');
+    currentStep = n + 1;
+    updateProgress(currentStep);
+    if (currentStep === 2) updateStep2ForCategory();
+    if (currentStep === 3) updateEducateurDisplay(getCategory());
+    if (currentStep === 4) { updateStep4ForCategory(); buildSummary(); }
+  }
   window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
 }
 
 function prevStep(n) {
+  if (n === 4 && charteRequise) {
+    document.getElementById('step4').classList.remove('active');
+    document.getElementById('stepCharte').classList.add('active');
+    currentStep = 'charte';
+    updateProgress('charte');
+    onCharteScroll();
+    window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
+    return;
+  }
   document.getElementById('step' + n).classList.remove('active');
   document.getElementById('step' + (n - 1)).classList.add('active');
   currentStep = n - 1;
   updateProgress(currentStep);
+  window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
+}
+
+function nextStepCharte() {
+  if (!validateCharte()) return;
+  document.getElementById('stepCharte').classList.remove('active');
+  document.getElementById('step4').classList.add('active');
+  currentStep = 4;
+  updateProgress(4);
+  updateStep4ForCategory();
+  buildSummary();
+  window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
+}
+
+function prevStepCharte() {
+  document.getElementById('stepCharte').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+  currentStep = 3;
+  updateProgress(3);
   window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 20, behavior: 'smooth' });
 }
 
@@ -287,25 +334,35 @@ function updateStep4ForCategory() {
 }
 
 function updateProgress(step) {
-  const labels = [
-    '',
-    'Étape 1/4 — Joueur',
-    'Étape 2/4 — Contact',
-    'Étape 3/4 — Démarches',
-    'Étape 4/4 — Droit à l\'image',
-  ];
-  document.getElementById('progressText').textContent = labels[step];
+  var total  = charteRequise ? 5 : 4;
+  var labels = {
+    1:       'Étape 1/' + total + ' — Joueur',
+    2:       'Étape 2/' + total + ' — Contact',
+    3:       'Étape 3/' + total + ' — Démarches',
+    charte:  'Étape 4/5 — Charte sportive',
+    4:       'Étape ' + total + '/' + total + ' — Droit à l\'image',
+  };
+  document.getElementById('progressText').textContent = labels[step] || '';
 
-  for (let i = 1; i <= 4; i++) {
-    const el = document.getElementById('pstep' + i);
+  // Ordre numérique pour comparaison (charte = 3.5)
+  var order = step === 'charte' ? 3.5 : step;
+  var stepOrders = { pstep1: 1, pstep2: 2, pstep3: 3, pstepCharte: 3.5, pstep4: charteRequise ? 4.5 : 4 };
+
+  Object.keys(stepOrders).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el || el.hidden) return;
     el.classList.remove('active', 'completed');
-    if (i < step)   el.classList.add('completed');
-    if (i === step) el.classList.add('active');
-  }
+    if (stepOrders[id] < order)  el.classList.add('completed');
+    if (stepOrders[id] === order) el.classList.add('active');
+  });
 
-  document.getElementById('line1').style.width = step >= 2 ? '100%' : '0';
-  document.getElementById('line2').style.width = step >= 3 ? '100%' : '0';
-  document.getElementById('line3').style.width = step >= 4 ? '100%' : '0';
+  document.getElementById('line1').style.width = order >= 2   ? '100%' : '0';
+  document.getElementById('line2').style.width = order >= 3   ? '100%' : '0';
+  document.getElementById('line3').style.width = (!charteRequise && order >= 4) ? '100%' : '0';
+  if (charteRequise) {
+    document.getElementById('lineCaF').style.width = order >= 3.5 ? '100%' : '0';
+    document.getElementById('lineCbF').style.width = order >= 4.5 ? '100%' : '0';
+  }
 }
 
 // ── Catégorie et photo ──
@@ -330,6 +387,16 @@ function onDateChange() {
   const cat = CATEGORIES[year] || 'Senior';
   isSenior = (cat === 'Senior');
   window.categorieSelectionnee = cat;
+
+  // Charte requise pour U15, U16, U17, Senior
+  var newCharteRequise = CHARTE_CATEGORIES_PREFIXES.some(function(p) {
+    return cat.toLowerCase().startsWith(p);
+  });
+  if (newCharteRequise !== charteRequise) {
+    charteRequise = newCharteRequise;
+    toggleCharteProgressStep(charteRequise);
+    resetCharteStep();
+  }
   badge.textContent = 'Catégorie : ' + cat;
   display.hidden = false;
 
@@ -539,12 +606,87 @@ function buildSummary() {
   const comment = val('commentaire').trim();
   if (comment) rows.push({ label: 'Commentaire', value: comment, full: true });
 
+  if (charteRequise) {
+    var charteOk = document.getElementById('checkCharte').checked;
+    rows.push({ label: 'Charte sportive', value: charteOk ? '✅ Acceptée' : '—' });
+  }
+
   document.getElementById('summaryContent').innerHTML = rows.map(function (r) {
     return '<div class="summary-item' + (r.full ? ' summary-item--full' : '') + '">' +
       '<div class="s-label">' + r.label + '</div>' +
       '<div class="s-value">' + (r.value || '—') + '</div>' +
       '</div>';
   }).join('');
+}
+
+// ── Charte sportive ──
+function necessiteCharte(cat) {
+  if (!cat) return false;
+  var c = cat.toLowerCase().trim();
+  return CHARTE_CATEGORIES_PREFIXES.some(function(p) { return c.startsWith(p); });
+}
+
+function toggleCharteProgressStep(show) {
+  document.getElementById('pstepCharte').hidden = !show;
+  document.getElementById('lineCa').hidden      = !show;
+  document.getElementById('lineCb').hidden      = !show;
+  document.getElementById('line3Wrap').hidden   =  show;
+  document.getElementById('pstep4Dot').textContent = show ? '5' : '4';
+}
+
+function resetCharteStep() {
+  charteScrollPct = 0;
+  var cb  = document.getElementById('checkCharte');
+  cb.checked = false;
+  cb.disabled = true;
+  cb.setAttribute('aria-disabled', 'true');
+  document.getElementById('charteSignature').value = '';
+  document.getElementById('charteScrollBox').scrollTop = 0;
+  document.getElementById('charteReadingFill').style.width = '0%';
+  document.getElementById('charteReadingPct').textContent  = 'Lecture : 0 %';
+  document.getElementById('charteScrollHint').hidden = false;
+  document.getElementById('charteNextBtn').disabled  = true;
+}
+
+function onCharteScroll() {
+  var box = document.getElementById('charteScrollBox');
+  charteScrollPct = box.scrollHeight <= box.clientHeight ? 100
+    : Math.round(box.scrollTop / (box.scrollHeight - box.clientHeight) * 100);
+
+  document.getElementById('charteReadingFill').style.width = charteScrollPct + '%';
+  document.getElementById('charteReadingPct').textContent  = 'Lecture : ' + charteScrollPct + ' %';
+
+  if (charteScrollPct >= 95) {
+    var cb = document.getElementById('checkCharte');
+    cb.disabled = false;
+    cb.removeAttribute('aria-disabled');
+    document.getElementById('charteScrollHint').hidden = true;
+  }
+  updateCharteBtn();
+}
+
+function updateCharteBtn() {
+  var cb  = document.getElementById('checkCharte');
+  var sig = document.getElementById('charteSignature').value.trim();
+  document.getElementById('charteNextBtn').disabled =
+    !(charteScrollPct >= 95 && cb.checked && sig.length > 0);
+}
+
+function validateCharte() {
+  var ok = true;
+  if (!document.getElementById('checkCharte').checked) {
+    showError('checkCharte', 'Veuillez accepter la charte pour continuer.');
+    ok = false;
+  } else {
+    clearError('checkCharte');
+  }
+  if (!document.getElementById('charteSignature').value.trim()) {
+    showError('charteSignature', 'La signature est obligatoire.');
+    ok = false;
+  } else {
+    clearError('charteSignature');
+  }
+  return ok;
 }
 
 // ── Helpers ──

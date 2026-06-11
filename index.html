@@ -163,9 +163,15 @@
                 <div class="progress-dot">3</div>
                 <div class="progress-label">Démarches</div>
               </div>
-              <div class="progress-line"><div class="progress-line-fill" id="line3"></div></div>
-              <div class="progress-step" id="pstep4">
+              <div class="progress-line" id="line3Wrap"><div class="progress-line-fill" id="line3"></div></div>
+              <div class="progress-line" id="lineCa" hidden><div class="progress-line-fill" id="lineCaF"></div></div>
+              <div class="progress-step" id="pstepCharte" hidden>
                 <div class="progress-dot">4</div>
+                <div class="progress-label">Charte</div>
+              </div>
+              <div class="progress-line" id="lineCb" hidden><div class="progress-line-fill" id="lineCbF"></div></div>
+              <div class="progress-step" id="pstep4">
+                <div class="progress-dot" id="pstep4Dot">4</div>
                 <div class="progress-label">Droit image</div>
               </div>
             </div>
@@ -383,6 +389,81 @@
               <div class="step-nav">
                 <button type="button" class="btn btn--back" onclick="prevStep(3)">← Retour</button>
                 <button type="button" class="btn btn--next" onclick="nextStep(3)">Étape suivante →</button>
+              </div>
+            </div>
+
+            <!-- ════════════ ÉTAPE CHARTE (U15/U16/U17/Senior) ════════════ -->
+            <div class="form-step" id="stepCharte">
+              <h2 class="step-heading">Charte sportive EPRS — Saison 2026/2027</h2>
+
+              <!-- Barre de lecture -->
+              <div class="charte-reading-wrap">
+                <div class="charte-reading-bg">
+                  <div class="charte-reading-fill" id="charteReadingFill"></div>
+                </div>
+                <span class="charte-reading-pct" id="charteReadingPct">Lecture : 0 %</span>
+              </div>
+
+              <!-- Texte scrollable -->
+              <div class="charte-scroll-box" id="charteScrollBox">
+
+                <h3 class="charte-section-title">Préambule</h3>
+                <p>L'Entente Petit-Réderching Siersthal est un club ancré dans les valeurs du sport amateur : respect, fair-play, esprit d'équipe et engagement bénévole. Cette charte a été élaborée pour garantir un cadre serein et bienveillant pour l'ensemble de nos licenciés, bénévoles, arbitres et partenaires. Face au constat des dernières saisons — notamment le montant des amendes disciplinaires supportées collectivement — le bureau directeur instaure un système de responsabilisation individuelle.</p>
+
+                <h3 class="charte-section-title">Qui est concerné</h3>
+                <p>Cette charte s'applique aux catégories <strong>U15, U16, U17</strong> et <strong>toutes les équipes Seniors</strong>. Les catégories U13 et inférieures ne sont pas concernées.</p>
+
+                <h3 class="charte-section-title">Codes disciplinaires et compensations internes</h3>
+                <div class="charte-table-wrap">
+                  <table class="charte-table">
+                    <thead>
+                      <tr>
+                        <th>Code FMI</th>
+                        <th>Nature de l'infraction</th>
+                        <th>Compensation financière</th>
+                        <th>Alternative bénévolat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>J2</td><td>Carton jaune (contestation)</td><td>10 €</td><td>2 h</td></tr>
+                      <tr><td>R2</td><td>Carton rouge direct</td><td>20 €</td><td>3 h</td></tr>
+                      <tr><td>R6</td><td>Carton rouge (cumul de jaunes)</td><td>20 €</td><td>3 h</td></tr>
+                      <tr><td>R3</td><td>Crachat</td><td>30 €</td><td>4 h</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>Ces montants correspondent à la participation du licencié aux amendes fédérales avancées par le club. Le bénévolat est une alternative à valider avec le bureau.</p>
+
+                <h3 class="charte-section-title">Missions bénévoles disponibles</h3>
+                <p>Arbitrage de matchs U13, assistant arbitre, traçage du terrain, gestion des vestiaires, buvette lors des manifestations du club, soutien aux événements associatifs (repas, galette des rois, tournoi).</p>
+
+                <h3 class="charte-section-title">Esprit de la charte</h3>
+                <p>Cette charte n'est pas une sanction : c'est un outil de responsabilisation collective. Chaque licencié qui respecte l'arbitre, ses coéquipiers et ses adversaires contribue directement à la santé financière et à la réputation de notre club.</p>
+
+              </div>
+
+              <!-- Checkbox (désactivée jusqu'à 95% de lecture) -->
+              <div class="checkboxes-section">
+                <p class="charte-scroll-hint" id="charteScrollHint">⬇️ Faites défiler le texte jusqu'en bas pour activer la case à cocher.</p>
+                <label class="checkbox-option" id="charteCheckLabel">
+                  <input type="checkbox" id="checkCharte" name="charte_acceptee" disabled aria-disabled="true">
+                  <span class="checkbox-box" aria-hidden="true"></span>
+                  <span class="checkbox-text">J'ai lu et j'accepte la charte sportive de l'EPRS pour la saison 2026/2027. Je m'engage à respecter ses dispositions et, si je suis licencié(e) mineur(e), à en informer mon représentant légal.</span>
+                </label>
+                <div class="field-error" id="err_checkCharte" role="alert"></div>
+              </div>
+
+              <!-- Signature électronique -->
+              <div class="field-group">
+                <label for="charteSignature">Signature électronique — Saisir votre Nom et Prénom <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="charteSignature" name="charte_signature" placeholder="Ex : DUPONT Marie" autocomplete="name" aria-required="true">
+                <div class="field-hint">En saisissant votre nom, vous confirmez avoir lu et accepté la charte ci-dessus.</div>
+                <div class="field-error" id="err_charteSignature" role="alert"></div>
+              </div>
+
+              <div class="step-nav">
+                <button type="button" class="btn btn--back" onclick="prevStepCharte()">← Retour</button>
+                <button type="button" class="btn btn--next" id="charteNextBtn" onclick="nextStepCharte()" disabled>Continuer →</button>
               </div>
             </div>
 
