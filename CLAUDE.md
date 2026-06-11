@@ -11,9 +11,8 @@ Formulaire d'inscription en ligne pour les jeunes du club **EPRS (Entente Petit-
 
 - HTML / CSS / JS vanilla (pas de framework)
 - Hébergement : **GitHub Pages** (dépôt public)
-- Collecte des données : **Google Forms** (migration depuis Formspree, limité en soumissions)
-- Email de confirmation : **EmailJS** (service `service_p7jxxvn`, template `8mwemee`)
-- Webhook automation : **Make.com** (`https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv`)
+- Collecte des données + emails : **Make.com** webhook → Google Sheets + emails
+- Webhook Make.com : `https://hook.eu1.make.com/1171ryrtij32o5qejqts591v5pxo4vr7`
 
 ---
 
@@ -98,9 +97,12 @@ Les champs HTML sont mappés sur les `entry.XXXXXXXXX` du Google Form.
 
 ## Déploiement GitHub Pages
 
+- **Repo** : https://github.com/contacteprs/inscriptions_EPRS
+- **Compte GitHub** : contacteprs (token PAT stocké dans l'URL git remote)
+- **Site** : https://contacteprs.github.io/inscriptions_EPRS/
+
 ```bash
 git add index.html style.css script.js confirmation.html
 git commit -m "feat: mise à jour saison XXXX/XXXX"
 git push origin main
-# Disponible sur : https://TON_USERNAME.github.io/eprs-inscription/
 ```
