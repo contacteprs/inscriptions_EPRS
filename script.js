@@ -165,9 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tel_educateur:      educateur.tel,
     };
 
-    var sheetsUrl = GOOGLE_SHEETS_URL + '?data=' + encodeURIComponent(JSON.stringify(payload));
-    fetch(sheetsUrl, { mode: 'no-cors' })
-      .catch(function (err) { console.error('Google Sheets:', err); });
+    envoyerVersGoogleSheets(payload);
 
     // ── 2. Make.com webhook (fire-and-forget) ──
     fetch("https://hook.eu1.make.com/dtwh31l3g7g8pzktlhuamv94acnvhrkv", {
@@ -556,6 +554,34 @@ function buildSummary() {
       '<div class="s-value">' + (r.value || '—') + '</div>' +
       '</div>';
   }).join('');
+}
+
+// ── Envoi Google Sheets via formulaire caché (contourne les problèmes CORS/redirect) ──
+function envoyerVersGoogleSheets(payload) {
+  var iframe = document.getElementById('gsheets-frame');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id   = 'gsheets-frame';
+    iframe.name = 'gsheets-frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }
+
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GOOGLE_SHEETS_URL;
+  form.target = 'gsheets-frame';
+  form.style.display = 'none';
+
+  var input = document.createElement('input');
+  input.type  = 'hidden';
+  input.name  = 'data';
+  input.value = JSON.stringify(payload);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
 }
 
 // ── Helpers ──

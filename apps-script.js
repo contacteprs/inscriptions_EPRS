@@ -17,17 +17,12 @@ var HEADERS = [
 
 // Point d'entrée GET (utilisé par le formulaire HTML via no-cors)
 function doGet(e) {
-  if (e && e.parameter && e.parameter.data) {
-    return traiterInscription(e.parameter.data);
-  }
-  // Appel direct sans données = vérification que le script tourne
   return ContentService.createTextOutput('EPRS Inscriptions — Apps Script actif');
 }
 
-// Point d'entrée POST (fallback)
+// Point d'entrée POST (formulaire caché depuis le site)
 function doPost(e) {
-  var raw = (e && e.parameter && e.parameter.data)
-         || (e && e.postData  && e.postData.contents);
+  var raw = e && e.parameter && e.parameter.data;
   if (raw) return traiterInscription(raw);
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'error', message: 'no data' }))
